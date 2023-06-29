@@ -1,0 +1,129 @@
+{% extends 'pizza/main.html' %}
+
+{% block content %}
+  <style>
+    .card {
+      background-color: #DBD7D2;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      transition: box-shadow 0.3s ease;
+      overflow: hidden;
+    }
+
+    .card:hover {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-img-top {
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .card-body {
+      padding: 1.25rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .card-title {
+      margin-top: 0;
+      font-size: 1.25rem;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .card-text {
+      margin-top: 1rem;
+      text-align: justify;
+      margin-bottom: 0;
+    }
+
+    .card-footer {
+      background-color: #f5f5f5;
+      border-top: none;
+      padding: 0.60rem 1.25rem;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .no-image {
+      background-color: #f0f0f0;
+      height: 200px;
+    }
+
+    .size-select {
+      margin-top: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .size-price {
+      font-weight: bold;
+      margin-top: 0;
+      text-align: center;
+    }
+  </style>
+
+   <div class="container">
+    <br>
+    <div class="row">
+      {% for item in menu_items %}
+        <div class="col-md-4 mb-4">
+          <div class="card h-100">
+            {% if item.picture %}
+              <img src="{{ item.picture }}" class="card-img-top" alt="{{ item.name }}">
+            {% else %}
+              <div class="no-image"></div>
+            {% endif %}
+            <div class="card-body">
+              <h5 class="card-title">{{ item.name }}</h5>
+              <p class="card-text">{{ item.description }}</p>
+              <div class="size-select">
+                <label for="size{{ item.id }}" class="form-label">Размер:</label>
+                <select class="form-select size-select" id="size{{ item.id }}" name="size" data-item-id="{{ item.id }}">
+                  {% for size, price in item.sizes.items %}
+                    <option value="{{ size }}">{{ size }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+            {% if item.sizes %}
+              <div class="card-footer">
+                <p class="size-price" id="price{{ item.id }}"></p>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <script>
+   {% for item in menu_items %}
+      var sizeSelect{{ item.id }} = document.getElementById("size{{ item.id }}");
+      var priceElement{{ item.id }} = document.getElementById("price{{ item.id }}");
+      var sizes{{ item.id }} = {{ item.sizes|safe }};
+      var initialSize{{ item.id }} = Object.keys(sizes{{ item.id }})[0];
+      sizeSelect{{ item.id }}.value = initialSize{{ item.id }};
+      priceElement{{ item.id }}.innerText = sizes{{ item.id }}[initialSize{{ item.id }}] + " руб.";
+
+    sizeSelect{{ item.id }}.addEventListener("change", function() {
+        var selectedSize = this.value;
+        if (selectedSize in sizes{{ item.id }}) {
+          var price = sizes{{ item.id }}[selectedSize];
+          priceElement{{ item.id }}.innerText = price + " руб.";
+        } else {
+          priceElement{{ item.id }}.innerText = "";
+        }
+      });
+    {% endfor %}
+  </script>
+{% endblock %}
+
+
+
+
+

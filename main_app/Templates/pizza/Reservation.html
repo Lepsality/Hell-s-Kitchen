@@ -1,0 +1,75 @@
+{% extends 'pizza/main.html' %}
+{% load static %}
+
+{% block content %}
+  <div class="container mt-4">
+    <h2 class="mb-4">Бронирование</h2>
+    <form method="post" class="needs-validation" novalidate>
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="{{ form.name.id_for_label }}">Имя</label>
+        {{ form.name }}
+      </div>
+      <div class="form-group">
+        <label for="{{ form.date.id_for_label }}">Дата</label>
+        {{ form.date }}
+      </div>
+      <div class="form-group">
+        <label for="{{ form.phone.id_for_label }}">Телефон</label>
+        {{ form.phone }}
+      </div>
+      <button type="submit" class="btn btn-primary btn-lg mt-3">Отправить</button>
+    </form>
+  </div>
+
+  <style>
+    .container {
+      max-width: 500px;
+      margin: 80px auto 0; /* Добавлен отступ сверху */
+      background-color: #DBD7D2; /* Цвет фона контейнера */
+      padding: 20px;
+      border-radius: 8px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333; /* Цвет заголовка */
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      font-weight: bold;
+      color: #555; /* Цвет текста для label */
+    }
+
+    input[type="text"],
+    input[type="tel"],
+    input[type="date"] {
+      width: 100%;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 5px;
+      margin-bottom: 20px;
+      color: #555; /* Цвет текста для input */
+    }
+
+    .btn-primary {
+      background-color: #858585; /* Цвет фона кнопки */
+      border-color: #858585; /* Цвет рамки кнопки */
+      padding: 10px 20px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #fff; /* Цвет текста для кнопки */
+      width: 100%;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background-color: #616161; /* Цвет фона кнопки при наведении */
+      border-color: #616161; /* Цвет рамки кнопки при наведении */
+    }
+  </style>
+{% endblock %}
+
